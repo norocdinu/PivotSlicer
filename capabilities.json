@@ -1,0 +1,150 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Fields",
+            "name": "fields",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Values",
+            "name": "values",
+            "kind": "Measure"
+        }
+    ],
+    "objects": {
+        "general": {
+            "properties": {
+                "filter": {
+                    "type": {
+                        "filter": true
+                    }
+                }
+            }
+        },
+        "slicerSettings": {
+            "properties": {
+                "singleSelect": {
+                    "type": { "bool": true }
+                },
+                "showSelectAll": {
+                    "type": { "bool": true }
+                },
+                "showSearch": {
+                    "type": { "bool": true }
+                }
+            }
+        },
+        "header": {
+            "properties": {
+                "show": {
+                    "type": { "bool": true }
+                },
+                "title": {
+                    "type": { "text": true }
+                },
+                "fontColor": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "background": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "fontSize": {
+                    "type": { "formatting": { "fontSize": true } }
+                },
+                "bold": {
+                    "type": { "bool": true }
+                },
+                "italic": {
+                    "type": { "bool": true }
+                }
+            }
+        },
+        "items": {
+            "properties": {
+                "fontColor": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "background": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "alternateBackground": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "fontSize": {
+                    "type": { "formatting": { "fontSize": true } }
+                },
+                "bold": {
+                    "type": { "bool": true }
+                },
+                "italic": {
+                    "type": { "bool": true }
+                },
+                "padding": {
+                    "type": { "numeric": true }
+                }
+            }
+        },
+        "selectionControls": {
+            "properties": {
+                "checkboxColor": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "selectedBackground": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "selectedFontColor": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "hoverBackground": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "hoverFontColor": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                }
+            }
+        },
+        "hierarchySettings": {
+            "properties": {
+                "indentSize": {
+                    "type": { "numeric": true }
+                },
+                "showTotals": {
+                    "type": { "bool": true }
+                },
+                "expandByDefault": {
+                    "type": { "bool": true }
+                },
+                "totalLabel": {
+                    "type": { "text": true }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "conditions": [
+                {
+                    "fields": { "max": 10 },
+                    "values": { "max": 1 }
+                }
+            ],
+            "categorical": {
+                "categories": {
+                    "select": [
+                        { "for": { "in": "fields" } }
+                    ],
+                    "dataReductionAlgorithm": {
+                        "top": { "count": 30000 }
+                    }
+                },
+                "values": {
+                    "select": [
+                        { "bind": { "to": "values" } }
+                    ]
+                }
+            }
+        }
+    ],
+    "supportsHighlight": false,
+    "privileges": []
+}
