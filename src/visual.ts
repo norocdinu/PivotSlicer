@@ -356,11 +356,8 @@ export class Visual implements IVisual {
                 if (singleSelect) {
                     this.clearAllSelections(this.rootNodes);
                     node.isSelected = true;
-                    this.setChildrenSelected(node, true);
                 } else {
                     node.isSelected = !node.isSelected;
-                    this.setChildrenSelected(node, node.isSelected);
-                    this.updateParentSelection(node);
                 }
                 this.syncState(this.rootNodes);
                 this.renderList();
@@ -407,15 +404,19 @@ export class Visual implements IVisual {
 
     private isPartiallySelected(node: HierarchyNode): boolean {
         if (node.children.length === 0) return false;
-        let hasSelected = false;
-        let hasUnselected = false;
-        for (const child of node.children) {
-            if (child.isSelected) hasSelected = true;
-            else hasUnselected = true;
-            if (hasSelected && hasUnselected) return true;
-            if (child.children.length > 0 && this.isPartiallySelected(child)) return true;
+        // Show partial when parent is not selected but has selected descendants
+        if (!node.isSelected) {
+            return this.hasSelectedDescendant(node);
         }
-        return hasSelected && hasUnselected;
+        return false;
+    }
+
+    private hasSelectedDescendant(node: HierarchyNode): boolean {
+        for (const child of node.children) {
+            if (child.isSelected) return true;
+            if (this.hasSelectedDescendant(child)) return true;
+        }
+        return false;
     }
 
     private toggleSelectAll(): void {
@@ -440,29 +441,6 @@ export class Visual implements IVisual {
         }
     }
 
-    private setChildrenSelected(node: HierarchyNode, selected: boolean): void {
-        for (const child of node.children) {
-            child.isSelected = selected;
-            this.setChildrenSelected(child, selected);
-        }
-    }
-
-    private updateParentSelection(node: HierarchyNode): void {
-        // Walk up from node and update parent states
-        // We need to find the parent by searching the tree
-        this.updateParentsInTree(this.rootNodes);
-    }
-
-    private updateParentsInTree(nodes: HierarchyNode[]): void {
-        for (const node of nodes) {
-            if (node.children.length > 0) {
-                this.updateParentsInTree(node.children);
-                const allChildrenSelected = node.children.every(c => c.isSelected);
-                const anyChildSelected = node.children.some(c => c.isSelected);
-                node.isSelected = allChildrenSelected;
-            }
-        }
-    }
 
     private applyFilter(): void {
         if (this.categories.length === 0) return;
@@ -473,61 +451,21 @@ export class Visual implements IVisual {
             return;
         }
 
-        // Collect selected leaf row indices
-        const selectedRows = new Set<number>();
-        this.collectSelectedRows(this.rootNodes, selectedRows);
+        // Collect display names from all selected nodes (both parents and leaves)
+        const selectedValues = new Set<string>();
+        this.collectSelectedValues(this.rootNodes, selectedValues);
 
-        if (selectedRows.size === 0) {
-            // Nothing selected - apply an impossible filter to show no data
-            const column = this.categories[0].source;
-            const filter = new models.BasicFilter(
-                { table: column.queryName!.split(".")[0], column: column.displayName },
-                "In",
-                ["\x00__IMPOSSIBLE_VALUE__\x00"]
-            );
-            this.host.applyJsonFilter(filter, "general", "filter", FilterAction.merge);
+        if (selectedValues.size === 0) {
+            // Nothing selected - no filter applied, all data shows
+            this.host.applyJsonFilter(null, "general", "filter", FilterAction.remove);
             return;
         }
 
-        // Build filter based on hierarchy levels
-        // For single-level, use BasicFilter
-        // For multi-level, use tuple filter
-        if (this.categories.length === 1) {
-            this.applySingleLevelFilter(selectedRows);
-        } else {
-            this.applyMultiLevelFilter(selectedRows);
-        }
-    }
-
-    private collectSelectedRows(nodes: HierarchyNode[], rows: Set<number>): void {
-        for (const node of nodes) {
-            if (node.children.length === 0) {
-                // Leaf node
-                if (node.isSelected) {
-                    for (const idx of node.rowIndices) {
-                        rows.add(idx);
-                    }
-                }
-            } else {
-                // Parent node: collect from children
-                this.collectSelectedRows(node.children, rows);
-            }
-        }
-    }
-
-    private applySingleLevelFilter(selectedRows: Set<number>): void {
-        const column = this.categories[0].source;
-        const values: (string | number | boolean)[] = [];
-
-        for (const row of selectedRows) {
-            const val = this.categories[0].values[row];
-            if (val != null) {
-                values.push(val as string | number | boolean);
-            }
-        }
-
-        // Deduplicate
-        const uniqueValues = [...new Set(values)];
+        // Always filter on the deepest (last) category column
+        // L1 selection → parent's displayName goes into the deepest column filter (shows total row)
+        // L2 selection → leaf's displayName goes into the deepest column filter (shows individual rows)
+        const deepestCategory = this.categories[this.categories.length - 1];
+        const column = deepestCategory.source;
 
         const filter = new models.BasicFilter(
             {
@@ -535,50 +473,20 @@ export class Visual implements IVisual {
                 column: column.displayName
             },
             "In",
-            uniqueValues
+            [...selectedValues]
         );
 
         this.host.applyJsonFilter(filter, "general", "filter", FilterAction.merge);
     }
 
-    private applyMultiLevelFilter(selectedRows: Set<number>): void {
-        // Build tuple filter for multi-column selection
-        const targets: models.IFilterColumnTarget[] = this.categories.map(cat => ({
-            table: cat.source.queryName!.split(".")[0],
-            column: cat.source.displayName
-        }));
-
-        const tupleValues: models.TupleValueType[] = [];
-
-        for (const row of selectedRows) {
-            const tuple: models.ITupleElementValue[] = this.categories.map(cat => {
-                const val = cat.values[row];
-                return {
-                    value: val != null ? val as models.PrimitiveValueType : null as any
-                } as models.ITupleElementValue;
-            });
-            tupleValues.push(tuple);
-        }
-
-        // Deduplicate tuples by string representation
-        const seen = new Set<string>();
-        const uniqueTuples: models.TupleValueType[] = [];
-        for (const t of tupleValues) {
-            const key = JSON.stringify(t.map(v => v.value));
-            if (!seen.has(key)) {
-                seen.add(key);
-                uniqueTuples.push(t);
+    private collectSelectedValues(nodes: HierarchyNode[], values: Set<string>): void {
+        for (const node of nodes) {
+            if (node.isSelected) {
+                values.add(node.displayName);
             }
+            // Always recurse — parent and child selections are independent
+            this.collectSelectedValues(node.children, values);
         }
-
-        const filter = new models.TupleFilter(targets, "In", uniqueTuples);
-
-        this.host.applyJsonFilter(
-            filter as any,
-            "general",
-            "filter",
-            FilterAction.merge
-        );
     }
 
     private formatValue(value: number): string {
