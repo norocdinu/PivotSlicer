@@ -54,7 +54,7 @@ export class Visual implements IVisual {
         this.target = options.element;
 
         this.container = document.createElement("div");
-        this.container.className = "hierarchy-slicer";
+        this.container.className = "pivot-slicer";
         this.target.appendChild(this.container);
 
         // Header
@@ -140,7 +140,7 @@ export class Visual implements IVisual {
                 } else {
                     const prevExpanded = this.expandedState.get(nodeId);
                     const prevSelected = this.selectedState.get(nodeId);
-                    const expandDefault = this.formattingSettings?.hierarchySettingsCard?.expandByDefault?.value ?? false;
+                    const expandDefault = this.formattingSettings?.pivotSettingsCard?.expandByDefault?.value ?? false;
 
                     node = {
                         id: nodeId,
@@ -243,7 +243,7 @@ export class Visual implements IVisual {
         root.style.setProperty("--hover-bg", s.selectionControlsCard.hoverBackground.value.value || "#F0F0F0");
         root.style.setProperty("--hover-font-color", s.selectionControlsCard.hoverFontColor.value.value || "#333333");
 
-        root.style.setProperty("--indent-size", s.hierarchySettingsCard.indentSize.value + "px");
+        root.style.setProperty("--indent-size", s.pivotSettingsCard.indentSize.value + "px");
     }
 
     private renderList(): void {
@@ -283,7 +283,7 @@ export class Visual implements IVisual {
         counter: { index: number }
     ): void {
         const s = this.formattingSettings;
-        const showTotals = s.hierarchySettingsCard.showTotals.value;
+        const showTotals = s.pivotSettingsCard.showTotals.value;
         const singleSelect = s.slicerSettingsCard.singleSelect.value;
         const hasMultipleLevels = this.categories.length > 1;
 
@@ -305,7 +305,7 @@ export class Visual implements IVisual {
             counter.index++;
 
             // Indent
-            const indent = depth * s.hierarchySettingsCard.indentSize.value;
+            const indent = depth * s.pivotSettingsCard.indentSize.value;
 
             // Expand/collapse toggle for parent nodes
             const leftContent = document.createElement("div");

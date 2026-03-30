@@ -172,7 +172,7 @@ export class SelectionControlsCard extends FormattingSettingsCard {
     ];
 }
 
-export class HierarchySettingsCard extends FormattingSettingsCard {
+export class PivotSettingsCard extends FormattingSettingsCard {
     indentSize = new formattingSettings.NumUpDown({
         name: "indentSize",
         displayName: "Indent size (px)",
@@ -198,8 +198,8 @@ export class HierarchySettingsCard extends FormattingSettingsCard {
         placeholder: "Total"
     });
 
-    name: string = "hierarchySettings";
-    displayName: string = "Hierarchy";
+    name: string = "pivotSettings";
+    displayName: string = "Pivot";
     slices: Array<FormattingSettingsSlice> = [
         this.indentSize, this.showTotals, this.expandByDefault, this.totalLabel
     ];
@@ -210,13 +210,13 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     headerCard = new HeaderCard();
     itemsCard = new ItemsCard();
     selectionControlsCard = new SelectionControlsCard();
-    hierarchySettingsCard = new HierarchySettingsCard();
+    pivotSettingsCard = new PivotSettingsCard();
 
     cards = [
         this.slicerSettingsCard,
         this.headerCard,
         this.itemsCard,
         this.selectionControlsCard,
-        this.hierarchySettingsCard
+        this.pivotSettingsCard
     ];
 }

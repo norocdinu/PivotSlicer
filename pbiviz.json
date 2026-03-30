@@ -1,11 +1,11 @@
 {
     "visual": {
-        "name": "hierarchySlicer",
-        "displayName": "Hierarchy Slicer",
-        "guid": "hierarchySlicerDD92AEBC9F544C79A3D5092006B34E2F",
+        "name": "pivotSlicer",
+        "displayName": "Pivot Slicer",
+        "guid": "pivotSlicerDD92AEBC9F544C79A3D5092006B34E2F",
         "visualClassName": "Visual",
         "version": "1.0.0.0",
-        "description": "A hierarchical slicer with subcategory totals, tree view, search, and modern formatting options.",
+        "description": "A pivot slicer with subcategory totals, tree view, search, and modern formatting options.",
         "supportUrl": "https://github.com",
         "gitHubUrl": "https://github.com"
     },

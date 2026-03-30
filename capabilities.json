@@ -103,7 +103,7 @@
                 }
             }
         },
-        "hierarchySettings": {
+        "pivotSettings": {
             "properties": {
                 "indentSize": {
                     "type": { "numeric": true }
