@@ -44,6 +44,7 @@ export class Visual implements IVisual {
     private measureValues: powerbi.DataViewValueColumn | null = null;
     private searchTerm: string = "";
     private allSelected: boolean = true;
+    private selectAllExplicit: boolean = true;
     private expandedState: Map<string, boolean> = new Map();
     private selectedState: Map<string, boolean> = new Map();
     private dataView: DataView | null = null;
@@ -353,6 +354,7 @@ export class Visual implements IVisual {
 
             // Click handler
             row.addEventListener("click", () => {
+                this.selectAllExplicit = false;
                 if (singleSelect) {
                     this.clearAllSelections(this.rootNodes);
                     node.isSelected = true;
@@ -426,6 +428,7 @@ export class Visual implements IVisual {
 
     private toggleSelectAll(): void {
         this.allSelected = !this.allSelected;
+        this.selectAllExplicit = this.allSelected;
         this.setAllSelections(this.rootNodes, this.allSelected);
         this.syncState(this.rootNodes);
         this.renderList();
@@ -450,8 +453,8 @@ export class Visual implements IVisual {
     private applyFilter(): void {
         if (this.categories.length === 0) return;
 
-        // If all selected, clear the filter
-        if (this.areAllSelected(this.rootNodes)) {
+        // Only clear filter when Select All was explicitly toggled
+        if (this.selectAllExplicit) {
             this.host.applyJsonFilter(null, "general", "filter", FilterAction.remove);
             return;
         }
