@@ -29,6 +29,9 @@
                 "showSelectAll": {
                     "type": { "bool": true }
                 },
+                "ctrlSelect": {
+                    "type": { "bool": true }
+                },
                 "showSearch": {
                     "type": { "bool": true }
                 }

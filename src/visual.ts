@@ -353,9 +353,13 @@ export class Visual implements IVisual {
             }
 
             // Click handler
-            row.addEventListener("click", () => {
+            row.addEventListener("click", (e) => {
                 this.selectAllExplicit = false;
-                if (singleSelect) {
+                const ctrlMode = s.slicerSettingsCard.ctrlSelect.value;
+                const isMulti = !singleSelect && (!ctrlMode || e.ctrlKey || e.metaKey);
+
+                if (!isMulti) {
+                    // Single-select behavior: clear others, select this one
                     this.clearAllSelections(this.rootNodes);
                     node.isSelected = true;
                     this.setAllSelections(node.children, true);

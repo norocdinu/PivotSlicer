@@ -19,6 +19,12 @@ export class SlicerSettingsCard extends FormattingSettingsCard {
         value: true
     });
 
+    ctrlSelect = new formattingSettings.ToggleSwitch({
+        name: "ctrlSelect",
+        displayName: "Multi-select with CTRL",
+        value: false
+    });
+
     showSearch = new formattingSettings.ToggleSwitch({
         name: "showSearch",
         displayName: "Search",
@@ -27,7 +33,7 @@ export class SlicerSettingsCard extends FormattingSettingsCard {
 
     name: string = "slicerSettings";
     displayName: string = "Slicer Settings";
-    slices: Array<FormattingSettingsSlice> = [this.singleSelect, this.showSelectAll, this.showSearch];
+    slices: Array<FormattingSettingsSlice> = [this.singleSelect, this.showSelectAll, this.ctrlSelect, this.showSearch];
 }
 
 export class HeaderCard extends FormattingSettingsCard {
