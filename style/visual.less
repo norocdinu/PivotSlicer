@@ -5,62 +5,65 @@
     flex-direction: column;
     overflow: hidden;
     font-family: "Segoe UI", wf_segoe-ui_normal, helvetica, arial, sans-serif;
+    background-color: #fff;
 
-    --item-font-color: #333333;
+    --item-font-color: #323130;
     --item-bg: transparent;
     --item-alt-bg: transparent;
-    --item-font-size: 12px;
+    --item-font-size: 13px;
     --item-font-weight: normal;
     --item-font-style: normal;
     --item-padding: 4px;
-    --checkbox-color: #0078D4;
-    --selected-bg: #E6F2FF;
-    --selected-font-color: #333333;
-    --hover-bg: #F0F0F0;
-    --hover-font-color: #333333;
+    --checkbox-color: #117865;
+    --selected-bg: transparent;
+    --selected-font-color: #323130;
+    --hover-bg: #f3f2f1;
+    --hover-font-color: #323130;
     --indent-size: 20px;
 }
 
 .slicer-header {
-    padding: 8px 12px;
+    padding: 5px 8px 4px;
     font-size: 13px;
-    font-weight: bold;
-    color: #333;
-    border-bottom: 1px solid #e0e0e0;
+    font-weight: 600;
+    color: #323130;
     flex-shrink: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 18px;
 }
 
 .slicer-search {
-    padding: 6px 8px;
+    padding: 4px 8px 4px;
     flex-shrink: 0;
-    border-bottom: 1px solid #e8e8e8;
 }
 
 .slicer-search-input {
     width: 100%;
     box-sizing: border-box;
-    padding: 5px 8px;
-    border: 1px solid #d0d0d0;
-    border-radius: 3px;
+    padding: 4px 8px;
+    border: 1px solid #8a8886;
+    border-radius: 2px;
     font-size: 12px;
     font-family: inherit;
+    color: #323130;
     outline: none;
-    transition: border-color 0.15s;
+    background: #fff;
+    transition: border-color 0.1s;
 
     &:focus {
         border-color: var(--checkbox-color);
     }
 
     &::placeholder {
-        color: #999;
+        color: #a19f9d;
     }
 }
 
 .slicer-select-all {
-    border-bottom: 1px solid #e8e8e8;
+    padding: 2px 8px;
+    border-bottom: 1px solid #edebe9;
 }
 
 .slicer-list {
@@ -69,17 +72,17 @@
     overflow-x: hidden;
 
     &::-webkit-scrollbar {
-        width: 6px;
+        width: 8px;
     }
     &::-webkit-scrollbar-track {
         background: transparent;
     }
     &::-webkit-scrollbar-thumb {
-        background: #c0c0c0;
-        border-radius: 3px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-        background: #a0a0a0;
+        background: #c8c6c4;
+        border-radius: 4px;
+        &:hover {
+            background: #a19f9d;
+        }
     }
 }
 
@@ -94,11 +97,11 @@
     font-style: var(--item-font-style);
     cursor: pointer;
     user-select: none;
-    transition: background-color 0.1s;
-    min-height: 24px;
+    min-height: 26px;
+    line-height: 18px;
 
     &:hover {
-        background-color: var(--hover-bg) !important;
+        background-color: var(--hover-bg);
         color: var(--hover-font-color);
     }
 
@@ -111,7 +114,7 @@
 .slicer-item-left {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     flex: 1;
     min-width: 0;
 }
@@ -122,16 +125,15 @@
     justify-content: center;
     width: 16px;
     height: 16px;
-    font-size: 9px;
-    color: #666;
+    font-size: 8px;
+    color: #605e5c;
     flex-shrink: 0;
     cursor: pointer;
     border-radius: 2px;
-    transition: background-color 0.1s;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-        color: #333;
+        background-color: rgba(0, 0, 0, 0.05);
+        color: #323130;
     }
 }
 
@@ -147,13 +149,14 @@
     justify-content: center;
     width: 16px;
     height: 16px;
-    border: 1.5px solid #aaa;
-    border-radius: 3px;
+    border: 1px solid #8a8886;
+    border-radius: 2px;
     flex-shrink: 0;
     font-size: 11px;
+    font-weight: bold;
     line-height: 1;
     color: white;
-    transition: all 0.15s;
+    box-sizing: border-box;
 
     &.checked {
         background-color: var(--checkbox-color);
@@ -163,7 +166,6 @@
     &.partial {
         background-color: var(--checkbox-color);
         border-color: var(--checkbox-color);
-        opacity: 0.7;
     }
 }
 
@@ -177,7 +179,7 @@
 .slicer-item-value {
     flex-shrink: 0;
     margin-left: 8px;
-    color: #888;
+    color: #a19f9d;
     font-size: 0.9em;
     font-weight: normal;
     font-style: normal;

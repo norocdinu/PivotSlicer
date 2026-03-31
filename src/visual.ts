@@ -356,8 +356,13 @@ export class Visual implements IVisual {
                 if (singleSelect) {
                     this.clearAllSelections(this.rootNodes);
                     node.isSelected = true;
+                    this.setAllSelections(node.children, true);
                 } else {
                     node.isSelected = !node.isSelected;
+                    // Cascade visual selection to children when toggling a parent
+                    if (node.children.length > 0) {
+                        this.setAllSelections(node.children, node.isSelected);
+                    }
                 }
                 this.syncState(this.rootNodes);
                 this.renderList();
@@ -483,8 +488,10 @@ export class Visual implements IVisual {
         for (const node of nodes) {
             if (node.isSelected) {
                 values.add(node.displayName);
+                // Parent selected → only emit parent name, skip children
+                // (parent name maps to the "total" row in the deepest column)
+                if (node.children.length > 0) continue;
             }
-            // Always recurse — parent and child selections are independent
             this.collectSelectedValues(node.children, values);
         }
     }
