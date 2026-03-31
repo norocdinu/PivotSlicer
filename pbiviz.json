@@ -15,7 +15,7 @@
         "email": "custom@visual.dev"
     },
     "assets": {
-        "icon": "assets/icon.png"
+        "icon": "assets/icon.svg"
     },
     "externalJS": null,
     "style": "style/visual.less",
