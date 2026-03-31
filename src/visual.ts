@@ -237,8 +237,11 @@ export class Visual implements IVisual {
         root.style.setProperty("--item-font-weight", s.itemsCard.bold.value ? "bold" : "normal");
         root.style.setProperty("--item-font-style", s.itemsCard.italic.value ? "italic" : "normal");
         root.style.setProperty("--item-padding", s.itemsCard.padding.value + "px");
+        root.style.setProperty("--item-spacing", s.itemsCard.itemSpacing.value + "px");
 
         root.style.setProperty("--checkbox-color", s.selectionControlsCard.checkboxColor.value.value || "#0078D4");
+        root.style.setProperty("--checkbox-border-color", s.selectionControlsCard.checkboxBorderColor.value.value || "#8a8886");
+        root.style.setProperty("--checkbox-border-radius", s.selectionControlsCard.checkboxBorderRadius.value + "px");
         root.style.setProperty("--selected-bg", s.selectionControlsCard.selectedBackground.value.value || "#E6F2FF");
         root.style.setProperty("--selected-font-color", s.selectionControlsCard.selectedFontColor.value.value || "#333333");
         root.style.setProperty("--hover-bg", s.selectionControlsCard.hoverBackground.value.value || "#F0F0F0");
@@ -316,7 +319,19 @@ export class Visual implements IVisual {
             if (node.children.length > 0 && hasMultipleLevels) {
                 const toggle = document.createElement("span");
                 toggle.className = "slicer-expand-toggle";
-                toggle.textContent = node.isExpanded ? "\u25BC" : "\u25B6";
+                const iconStyle = s.pivotSettingsCard.expandIcon.value?.value || "caret";
+                if (iconStyle === "chevron") {
+                    toggle.textContent = "\u276F";
+                    toggle.style.fontSize = "11px";
+                    toggle.style.transition = "transform 0.15s";
+                    toggle.style.transform = node.isExpanded ? "rotate(90deg)" : "rotate(0deg)";
+                } else if (iconStyle === "plusMinus") {
+                    toggle.textContent = node.isExpanded ? "\u2212" : "+";
+                    toggle.style.fontSize = "14px";
+                    toggle.style.fontWeight = "bold";
+                } else {
+                    toggle.textContent = node.isExpanded ? "\u25BC" : "\u25B6";
+                }
                 toggle.addEventListener("click", (e) => {
                     e.stopPropagation();
                     node.isExpanded = !node.isExpanded;

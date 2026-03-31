@@ -131,11 +131,17 @@ export class ItemsCard extends FormattingSettingsCard {
         value: 4
     });
 
+    itemSpacing = new formattingSettings.NumUpDown({
+        name: "itemSpacing",
+        displayName: "Item spacing",
+        value: 0
+    });
+
     name: string = "items";
     displayName: string = "Values";
     slices: Array<FormattingSettingsSlice> = [
         this.fontColor, this.background, this.alternateBackground,
-        this.fontSize, this.bold, this.italic, this.padding
+        this.fontSize, this.bold, this.italic, this.padding, this.itemSpacing
     ];
 }
 
@@ -144,6 +150,18 @@ export class SelectionControlsCard extends FormattingSettingsCard {
         name: "checkboxColor",
         displayName: "Checkbox color",
         value: { value: "#0078D4" }
+    });
+
+    checkboxBorderColor = new formattingSettings.ColorPicker({
+        name: "checkboxBorderColor",
+        displayName: "Checkbox border color",
+        value: { value: "#8a8886" }
+    });
+
+    checkboxBorderRadius = new formattingSettings.NumUpDown({
+        name: "checkboxBorderRadius",
+        displayName: "Checkbox border radius",
+        value: 0
     });
 
     selectedBackground = new formattingSettings.ColorPicker({
@@ -173,7 +191,8 @@ export class SelectionControlsCard extends FormattingSettingsCard {
     name: string = "selectionControls";
     displayName: string = "Selection";
     slices: Array<FormattingSettingsSlice> = [
-        this.checkboxColor, this.selectedBackground, this.selectedFontColor,
+        this.checkboxColor, this.checkboxBorderColor, this.checkboxBorderRadius,
+        this.selectedBackground, this.selectedFontColor,
         this.hoverBackground, this.hoverFontColor
     ];
 }
@@ -197,6 +216,17 @@ export class PivotSettingsCard extends FormattingSettingsCard {
         value: false
     });
 
+    expandIcon = new formattingSettings.ItemDropdown({
+        name: "expandIcon",
+        displayName: "Expand/collapse icon",
+        items: [
+            { value: "caret", displayName: "Caret" },
+            { value: "chevron", displayName: "Chevron" },
+            { value: "plusMinus", displayName: "Plus / Minus" }
+        ],
+        value: { value: "caret", displayName: "Caret" }
+    });
+
     totalLabel = new formattingSettings.TextInput({
         name: "totalLabel",
         displayName: "Total label",
@@ -207,7 +237,7 @@ export class PivotSettingsCard extends FormattingSettingsCard {
     name: string = "pivotSettings";
     displayName: string = "Pivot";
     slices: Array<FormattingSettingsSlice> = [
-        this.indentSize, this.showTotals, this.expandByDefault, this.totalLabel
+        this.indentSize, this.showTotals, this.expandByDefault, this.expandIcon, this.totalLabel
     ];
 }
 

@@ -84,6 +84,9 @@
                 },
                 "padding": {
                     "type": { "numeric": true }
+                },
+                "itemSpacing": {
+                    "type": { "numeric": true }
                 }
             }
         },
@@ -91,6 +94,12 @@
             "properties": {
                 "checkboxColor": {
                     "type": { "fill": { "solid": { "color": true } } }
+                },
+                "checkboxBorderColor": {
+                    "type": { "fill": { "solid": { "color": true } } }
+                },
+                "checkboxBorderRadius": {
+                    "type": { "numeric": true }
                 },
                 "selectedBackground": {
                     "type": { "fill": { "solid": { "color": true } } }
@@ -116,6 +125,15 @@
                 },
                 "expandByDefault": {
                     "type": { "bool": true }
+                },
+                "expandIcon": {
+                    "type": {
+                        "enumeration": [
+                            { "value": "caret", "displayName": "Caret" },
+                            { "value": "chevron", "displayName": "Chevron" },
+                            { "value": "plusMinus", "displayName": "Plus / Minus" }
+                        ]
+                    }
                 },
                 "totalLabel": {
                     "type": { "text": true }

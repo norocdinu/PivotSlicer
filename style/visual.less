@@ -20,6 +20,9 @@
     --hover-bg: #f3f2f1;
     --hover-font-color: #323130;
     --indent-size: 20px;
+    --item-spacing: 0px;
+    --checkbox-border-color: #8a8886;
+    --checkbox-border-radius: 0px;
 }
 
 .slicer-header {
@@ -90,7 +93,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--item-padding) 8px;
+    padding: var(--item-padding) 4px;
     color: var(--item-font-color);
     font-size: var(--item-font-size);
     font-weight: var(--item-font-weight);
@@ -99,6 +102,7 @@
     user-select: none;
     min-height: 26px;
     line-height: 18px;
+    margin-top: var(--item-spacing);
 
     &:hover {
         background-color: var(--hover-bg);
@@ -149,8 +153,8 @@
     justify-content: center;
     width: 16px;
     height: 16px;
-    border: 1px solid #8a8886;
-    border-radius: 2px;
+    border: 1px solid var(--checkbox-border-color);
+    border-radius: var(--checkbox-border-radius);
     flex-shrink: 0;
     font-size: 11px;
     font-weight: bold;
