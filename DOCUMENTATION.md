@@ -4,6 +4,12 @@
 
 Pivot Slicer is a custom Power BI visual that provides hierarchical, level-aware filtering for parameter tables. It displays data in a collapsible tree view where selecting a parent category (L1) shows aggregated totals, while selecting a child item (L2) shows individual values.
 
+## Microsoft documentation
+
+
+ [Official documentation and tutorial](https://www.microsoft.com/en-us/power-platform/products/power-bi/developers/custom-visualization)
+
+
 ## Installation
 
 1. Download the `.pbiviz` file from the `dist/` folder
