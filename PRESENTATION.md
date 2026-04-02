@@ -7,9 +7,9 @@
 
 Power BI's built-in slicers are flat. When working with hierarchical data, you can't control **what level of detail** your charts display.
 
-For example, imagine a report with product categories ("Long", "Short") and individual products ("Amarilla", "Carretera", "Paseo"...).
+For example, imagine a report with categories ("Category A", "Category B") and individual subcategories ("Subcategory 1", "Subcategory 2", "Subcategory 3"...).
 
-With the standard slicer, you can filter to individual products — but you can't easily toggle between seeing **category totals** and **individual breakdowns**.
+With the standard slicer, you can filter to individual subcategories — but you can't easily toggle between seeing **category totals** and **individual breakdowns**.
 
 ---
 
@@ -30,12 +30,12 @@ It displays your data as a **collapsible tree** and lets users control the level
 ```
   [Select All]
 
-  v  Long
-       Long
-       Amarilla
-       Carretera
-       Montana
-  >  Short
+  v  Category A
+       Category A
+       Subcategory 1
+       Subcategory 2
+       Subcategory 3
+  >  Category B
 ```
 
 - The arrow expands/collapses groups
@@ -46,15 +46,15 @@ It displays your data as a **collapsible tree** and lets users control the level
 
 ## What Happens When You Click
 
-### Selecting a category ("Long")
+### Selecting a category ("Category A")
 
-The chart switches to show **one total bar** for the entire "Long" category.
+The chart switches to show **one total bar** for the entire "Category A" group.
 
-All items under "Long" appear visually checked, so it's clear what is included.
+All subcategories under "Category A" appear visually checked, so it's clear what is included.
 
-### Selecting an individual item ("Amarilla")
+### Selecting an individual subcategory ("Subcategory 1")
 
-The chart shows **only that item's** data.
+The chart shows **only that subcategory's** data.
 
 ### Selecting multiple categories
 
@@ -94,8 +94,8 @@ The standard Power BI slicer couldn't handle the requirement of switching betwee
 
 We created **parameter tables** in the Power BI data model:
 
-- **L1 table** — Contains category names ("Long", "Short") linked to total measure columns
-- **L2 table** — Contains individual items ("Amarilla", "Carretera"...) linked to their own measure columns, **plus total rows** that match the L1 names
+- **L1 table** — Contains category names ("Category A", "Category B") linked to total measure columns
+- **L2 table** — Contains individual subcategories ("Subcategory 1", "Subcategory 2"...) linked to their own measure columns, **plus total rows** that match the L1 names
 
 This structure lets a single filter column control whether the chart shows totals or details.
 

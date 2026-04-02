@@ -19,9 +19,9 @@ The slicer uses a **BasicFilter** on the deepest (last) category column in the f
 
 | Action | Filter Applied | Chart Shows |
 |--------|---------------|-------------|
-| Select L1 (e.g., "Long") | `par_consolidated_view = "Long"` | Total/aggregated bar |
-| Select L2 (e.g., "Amarilla") | `par_consolidated_view = "Amarilla"` | Individual item bar |
-| Select both L1 + L2 | `par_consolidated_view IN ("Long", "Amarilla")` | Total + individual |
+| Select L1 (e.g., "Category A") | `par_consolidated_view = "Category A"` | Total/aggregated bar |
+| Select L2 (e.g., "Subcategory 1") | `par_consolidated_view = "Subcategory 1"` | Individual item bar |
+| Select both L1 + L2 | `par_consolidated_view IN ("Category A", "Subcategory 1")` | Total + individual |
 | Select All | Filter removed | All data |
 | None selected | Filter removed | All data |
 
@@ -37,10 +37,10 @@ Example `par_consolidated_view` partition:
 
 ```dax
 {
-    ("Long", NAMEOF('financials'[Long]), -1, "Long", 0),
-    ("Short", NAMEOF('financials'[Short]), -1, "Short", 0),
-    ("Amarilla", NAMEOF('financials'[Amarilla]), 0, "Long", 1),
-    ("Carretera", NAMEOF('financials'[Carretera]), 1, "Long", 1),
+    ("Category A", NAMEOF('data'[Category A]), -1, "Category A", 0),
+    ("Category B", NAMEOF('data'[Category B]), -1, "Category B", 0),
+    ("Subcategory 1", NAMEOF('data'[Subcategory 1]), 0, "Category A", 1),
+    ("Subcategory 2", NAMEOF('data'[Subcategory 2]), 1, "Category A", 1),
     ...
 }
 ```

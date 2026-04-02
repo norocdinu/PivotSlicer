@@ -25,8 +25,8 @@ Drag your hierarchy columns into the **Fields** bucket (L1 first, L2 second). Op
 
 | Selection | Result |
 |-----------|--------|
-| L1 parent (e.g., "Long") | Chart shows category total |
-| L2 child (e.g., "Amarilla") | Chart shows individual item |
+| L1 parent (e.g., "Category A") | Chart shows category total |
+| L2 child (e.g., "Subcategory 1") | Chart shows individual item |
 | Multiple L1 + L2 | Chart shows mix of totals and items |
 | Select All | Filter cleared, all data shown |
 
