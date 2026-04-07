@@ -167,5 +167,6 @@
         }
     ],
     "supportsHighlight": false,
+    "supportsSynchronizingFilterState": true,
     "privileges": []
 }

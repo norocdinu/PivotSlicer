@@ -101,6 +101,7 @@ export class Visual implements IVisual {
         );
 
         this.parseData(this.dataView);
+        this.restoreSelectionFromFilter(this.dataView);
         this.applyFormatting();
         this.renderList();
     }
@@ -468,6 +469,45 @@ export class Visual implements IVisual {
         }
     }
 
+
+    private restoreSelectionFromFilter(dataView: DataView): void {
+        const filterObj = dataView.metadata?.objects?.general?.filter;
+
+        if (!filterObj) {
+            // No filter stored — treat as "select all"
+            this.selectAllExplicit = true;
+            this.setAllSelections(this.rootNodes, true);
+            this.syncState(this.rootNodes);
+            return;
+        }
+
+        try {
+            const filter = filterObj as any;
+            if (filter.values && Array.isArray(filter.values)) {
+                const selectedValues = new Set<string>(filter.values.map((v: any) => String(v)));
+                this.selectAllExplicit = false;
+                this.setAllSelections(this.rootNodes, false);
+                this.selectByFilterValues(this.rootNodes, selectedValues);
+                this.syncState(this.rootNodes);
+            }
+        } catch (e) {
+            // Filter couldn't be parsed — leave selection as-is
+        }
+    }
+
+    private selectByFilterValues(nodes: HierarchyNode[], selectedValues: Set<string>): void {
+        for (const node of nodes) {
+            if (selectedValues.has(node.displayName)) {
+                node.isSelected = true;
+                // Parent selected → cascade visual check to children
+                if (node.children.length > 0) {
+                    this.setAllSelections(node.children, true);
+                }
+            } else {
+                this.selectByFilterValues(node.children, selectedValues);
+            }
+        }
+    }
 
     private applyFilter(): void {
         if (this.categories.length === 0) return;
